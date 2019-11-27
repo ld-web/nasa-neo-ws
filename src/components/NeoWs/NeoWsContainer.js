@@ -4,6 +4,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import NeoWsError from "./NeoWsError";
+import { getNeoFeed } from "../../services/neoWs";
+import { DATE_FORMAT } from "../../constants";
 
 const NeoWsContainer = () => {
   // On pourrait déclarer une variable d'état structurée
@@ -41,7 +43,7 @@ const NeoWsContainer = () => {
       checkInterval(startDate, endDate);
       setError(null);
     } catch (e) {
-      setError({message: e.message});
+      setError({ message: e.message });
     }
   }, [startDate, endDate]);
 
@@ -51,8 +53,20 @@ const NeoWsContainer = () => {
   // Elle n'aura donc aucune raison de s'exécuter de nouveau ensuite.
   // C'est l'équivalent de la méthode componentDidMount dans un composant classe
   useEffect(() => {
-    console.log("Je suis monté !")
+    console.log("Je suis monté !");
   }, []);
+
+  const getDataApi = async () => {
+    try {
+      const momentStartDate = moment(startDate).format(DATE_FORMAT);
+      const momentEndDate = moment(endDate).format(DATE_FORMAT);
+
+      const res = await getNeoFeed(momentStartDate, momentEndDate);
+      console.log(res.data);
+    } catch {
+      setError({ message: "Une erreur est survenue pendant la récupération des données" });
+    }
+  };
 
   return (
     <div className="uk-container">
@@ -77,6 +91,9 @@ const NeoWsContainer = () => {
           className="uk-input"
           onChange={date => setEndDate(date)}
         />
+        <button className="uk-button uk-button-primary" onClick={getDataApi}>
+          RECHERCHER
+        </button>
       </div>
     </div>
   );
