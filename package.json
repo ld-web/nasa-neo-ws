@@ -3,13 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "better-react-spinkit": "^2.0.4",
+    "formik": "^2.0.6",
     "moment": "^2.24.0",
     "node-sass": "^4.13.0",
     "react": "^16.12.0",
     "react-datepicker": "^2.10.1",
     "react-dom": "^16.12.0",
     "react-scripts": "3.2.0",
-    "uikit": "^3.2.3"
+    "uikit": "^3.2.3",
+    "yup": "^0.27.0"
   },
   "scripts": {
     "start": "react-scripts start",

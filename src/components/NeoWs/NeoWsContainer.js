@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
-import moment from "moment";
 import NeoWsError from "./NeoWsError";
+import NeoWsSearch from "./Search/NeoWsSearch";
+import { checkInterval } from "./services/dateService";
 
 const NeoWsContainer = () => {
   // On pourrait déclarer une variable d'état structurée
@@ -18,19 +18,6 @@ const NeoWsContainer = () => {
   const [endDate, setEndDate] = useState(new Date());
   const [error, setError] = useState(null);
 
-  const checkInterval = (startDate, endDate) => {
-    const momentStartDate = moment(startDate);
-    const momentEndDate = moment(endDate);
-
-    if (momentEndDate.isBefore(momentStartDate)) {
-      throw new Error("La date de fin ne peut être avant la date de début");
-    }
-
-    if (momentStartDate.add(7, "days").isBefore(momentEndDate)) {
-      throw new Error("L'intervalle maximum est de 7 jours");
-    }
-  };
-
   // useEffect permet de déclencher ce qu'on appelle des "effets de bord"
   // Lors du changement d'une variable d'état (par exemple), on pourra lancer une fonction
   // Cette fonction à lancer est le premier paramètre fourni.
@@ -41,7 +28,7 @@ const NeoWsContainer = () => {
       checkInterval(startDate, endDate);
       setError(null);
     } catch (e) {
-      setError({message: e.message});
+      setError({ message: e.message });
     }
   }, [startDate, endDate]);
 
@@ -51,33 +38,19 @@ const NeoWsContainer = () => {
   // Elle n'aura donc aucune raison de s'exécuter de nouveau ensuite.
   // C'est l'équivalent de la méthode componentDidMount dans un composant classe
   useEffect(() => {
-    console.log("Je suis monté !")
+    console.log("Je suis monté !");
   }, []);
 
   return (
     <div className="uk-container">
       <NeoWsError error={error} />
 
-      <div>
-        Date de début :
-        <DatePicker
-          dateFormat="dd/MM/yyyy"
-          selected={startDate}
-          className="uk-input"
-          onChange={date => setStartDate(date)}
-          // ici onChange est équivalent à :
-          // onChange={function(date) {
-          //    setStartDate(date);
-          // }}
-        />
-        Date de fin :
-        <DatePicker
-          dateFormat="dd/MM/yyyy"
-          selected={endDate}
-          className="uk-input"
-          onChange={date => setEndDate(date)}
-        />
-      </div>
+      <NeoWsSearch
+        startDateValue={startDate}
+        endDateValue={endDate}
+        startChangeHandler={date => setStartDate(date)}
+        endChangeHandler={date => setEndDate(date)}
+      />
     </div>
   );
 };

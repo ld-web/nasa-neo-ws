@@ -2,3 +2,11 @@
 @import "~uikit/src/scss/variables";
 @import "~uikit/src/scss/mixins";
 @import "~uikit/src/scss/uikit";
+
+body {
+  height: 100vh;
+  background-image: url(img/bg.jpg);
+  background-size: cover;
+  background-position: 0 0;
+  background-repeat: no-repeat;
+}
