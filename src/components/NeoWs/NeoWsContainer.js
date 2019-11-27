@@ -20,6 +20,7 @@ const NeoWsContainer = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [error, setError] = useState(null);
+  const [objects, setObjects] = useState(null);
 
   // useEffect permet de déclencher ce qu'on appelle des "effets de bord"
   // Lors du changement d'une variable d'état (par exemple), on pourra lancer une fonction
@@ -44,6 +45,10 @@ const NeoWsContainer = () => {
     console.log("Je suis monté !");
   }, []);
 
+  useEffect(() => {
+    console.log(objects);
+  }, [objects]);
+
   const getDataApi = async () => {
     try {
       const momentStartDate = moment(startDate).format(DATE_FORMAT);
@@ -51,6 +56,7 @@ const NeoWsContainer = () => {
 
       const res = await getNeoFeed(momentStartDate, momentEndDate);
       console.log(res.data);
+      setObjects(res.data.near_earth_objects);
     } catch {
       setError({ message: "Une erreur est survenue pendant la récupération des données" });
     }
