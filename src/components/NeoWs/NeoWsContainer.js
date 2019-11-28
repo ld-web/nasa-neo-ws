@@ -7,7 +7,7 @@ import { getNeoFeed } from "../../services/neoWs";
 import { DATE_FORMAT } from "../../constants";
 import NeoWsSearch from "./Search/NeoWsSearch";
 import { checkInterval } from "../../utils/dateUtils";
-import NeoWsObjects from "./Objects/NeoWsObjects";
+import NeoWsAsteroids from "./Asteroids/NeoWsAsteroids";
 
 const NeoWsContainer = () => {
   // On pourrait déclarer une variable d'état structurée
@@ -21,7 +21,7 @@ const NeoWsContainer = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [error, setError] = useState(null);
-  const [objects, setObjects] = useState(null);
+  const [asteroids, setAsteroids] = useState(null);
 
   // useEffect permet de déclencher ce qu'on appelle des "effets de bord"
   // Lors du changement d'une variable d'état (par exemple), on pourra lancer une fonction
@@ -46,19 +46,17 @@ const NeoWsContainer = () => {
     console.log("Je suis monté !");
   }, []);
 
-  useEffect(() => {
-    console.log(objects);
-  }, [objects]);
-
   const getDataApi = async () => {
     try {
       const momentStartDate = moment(startDate).format(DATE_FORMAT);
       const momentEndDate = moment(endDate).format(DATE_FORMAT);
 
       const res = await getNeoFeed(momentStartDate, momentEndDate);
-      setObjects(res.data.near_earth_objects);
+      setAsteroids(res.data.near_earth_objects);
     } catch {
-      setError({ message: "Une erreur est survenue pendant la récupération des données" });
+      setError({
+        message: "Une erreur est survenue pendant la récupération des données"
+      });
     }
   };
 
@@ -74,7 +72,7 @@ const NeoWsContainer = () => {
         onClickHandler={getDataApi}
       />
 
-      <NeoWsObjects />
+      {asteroids && <NeoWsAsteroids asteroidsCollection={asteroids} />}
     </div>
   );
 };
