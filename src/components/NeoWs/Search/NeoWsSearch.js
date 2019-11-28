@@ -1,6 +1,8 @@
 import React from "react";
 import DatePicker from "react-datepicker";
 
+import './NeoWsSearch.scss';
+
 const NeoWsSearch = ({
   startDate,
   endDate,
@@ -9,28 +11,37 @@ const NeoWsSearch = ({
   onClickHandler
 }) => {
   return (
-    <div>
-      Date de début :
-      <DatePicker
-        dateFormat="dd/MM/yyyy"
-        selected={startDate}
-        className="uk-input"
-        onChange={startDateChangeHandler}
-        // ici onChange est équivalent à :
-        // onChange={function(date) {
-        //    setStartDate(date);
-        // }}
-      />
-      Date de fin :
-      <DatePicker
-        dateFormat="dd/MM/yyyy"
-        selected={endDate}
-        className="uk-input"
-        onChange={endDateChangeHandler}
-      />
-      <button className="uk-button uk-button-primary" onClick={onClickHandler}>
-        RECHERCHER
-      </button>
+    <div uk-grid="true" className="uk-flex uk-flex-center uk-flex-bottom">
+      <div>
+        <label>Date de début :</label>
+        <DatePicker
+          dateFormat="dd/MM/yyyy"
+          selected={startDate}
+          className="uk-input"
+          onChange={startDateChangeHandler}
+          // ici onChange est équivalent à :
+          // onChange={function(date) {
+          //    setStartDate(date);
+          // }}
+        />
+      </div>
+      <div>
+        <label>Date de fin :</label>
+        <DatePicker
+          dateFormat="dd/MM/yyyy"
+          selected={endDate}
+          className="uk-input"
+          onChange={endDateChangeHandler}
+        />
+      </div>
+      <div>
+        <button
+          className="uk-button uk-button-primary"
+          onClick={onClickHandler}
+        >
+          RECHERCHER
+        </button>
+      </div>
     </div>
   );
 };
